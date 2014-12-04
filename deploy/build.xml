@@ -1,0 +1,92 @@
+<project name="AlPad" default="create-bundle" basedir=".">
+
+  <property name="projectName"        value="alpad" />
+  <property name="src.dir"            value="../src" />
+  <property name="lib.dir"            value="../lib" />
+  <property name="classes.dir"        value="../classes" />
+  <property name="deploy.dir"         value="." />
+  <property name="release.dir"        value="${deploy.dir}/release" />
+  <property name="antOutputJar"       value="${deploy.dir}/alpadAntOutput.jar" />
+  <property name="proguardOutputJar"  value="${deploy.dir}/alpad.jar" />
+  <property environment="env"/>
+
+  <!-- taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask" -->
+  <!-- assumes appbundler-1.0.jar is in the current dir -->
+  <taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask" classpath="appbundler-1.0.jar" />
+
+  <taskdef resource="proguard/ant/task.properties" classpath="${deploy.dir}/proguard.jar" />
+
+  <path id="class.path">
+      <fileset dir="${lib.dir}">
+         <include name="**/*.jar"/>
+      </fileset>
+  </path>
+
+  <target name="clean">
+      <echo message="clean task ..." />
+      <!-- just needed for the first-time setup -->
+      <mkdir dir="${release.dir}"/>
+      <mkdir dir="${classes.dir}"/>
+      <!-- remove the old version of the app -->
+      <delete dir="${release.dir}/AlPad.app" />
+  </target>
+
+  <target name="compile" depends="clean">
+      <echo>=== COMPILE ===</echo>
+      <echo>Compiling ${src.dir} files ...</echo>
+      <javac debug="on" srcdir="${src.dir}" destdir="${classes.dir}" includes="**/*" includeAntRuntime="false">
+          <classpath refid="class.path" />
+      </javac>
+  </target>
+
+  <target name="make_jar" depends="compile">
+      <jar basedir="${classes.dir}"
+           jarfile="${deploy.dir}/${antOutputJar}"
+           manifest="${deploy.dir}/${projectName}.manifest"
+           includes="**/*.*"/>
+      <proguard configuration="${deploy.dir}/alpad.pro"/>
+  </target>
+
+
+  <!-- CREATE MAC BUNDLE (new for Java7+) -->
+  <target name="create-bundle" depends="make_jar">
+  <bundleapp outputdirectory="${release.dir}"
+      name="AlPad"
+      displayname="AlPad"
+      identifier="com.alvinalexander.alpad.AlPad"
+      shortversion="0.1"
+      icon="AlPad.icns"
+      copyright="Alvin J. Alexander"
+      applicationCategory="public.app-category.utilities"
+      mainclassname="com/alvinalexander/alpad/AlPad">
+
+      <runtime dir="${env.JAVA_HOME}" />
+
+      <!-- the only jar file needed  -->
+      <classpath file="${proguardOutputJar}" />
+
+      <!-- jvm settings -->
+      <option value="-Xms32m"/>
+      <option value="-Xmx128m"/>
+<!--
+      <option value="-XX:PermSize=20m"/>
+      <option value="-XX:MaxPermSize=20m"/>
+-->
+      <!-- "use cms for desktop ui" -->
+      <option value="-XX:+UseConcMarkSweepGC"/>
+      <option value="-XX:ParallelCMSThreads=2"/>
+
+      <!-- TODO verify that any/all of these are needed -->
+      <!-- option value="-Xdock:icon=../Resources/wiki.icns"></option -->
+      <option value="-Xdock:icon=Contents/Resources/AlPad.icns"/>
+      <option value="-Dapple.laf.useScreenMenuBar=true"/>
+      <option value="-Dcom.apple.macos.use-file-dialog-packages=true"/>
+      <option value="-Dcom.apple.macos.useScreenMenuBar=true"/>
+      <option value="-Dapple.awt.application.name=AlPad"/>
+      <option value="-Dcom.apple.smallTabs=true"/>
+
+    </bundleapp>
+  </target>
+
+</project>
+

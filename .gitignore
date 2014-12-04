@@ -1,0 +1,16 @@
+bin/
+project/project/
+project/target/
+target/
+deploy/alpad.jar
+deploy/alpadAntOutput.jar
+deploy/release/**/*.jar
+deploy/release/
+classes/
+.cache
+.classpath
+.project
+.settings
+*.class
+.DS_Store
+
