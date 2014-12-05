@@ -45,7 +45,7 @@ The icon comes from http://commons.wikimedia.org/wiki/File:Nuvola_apps_klipper.p
 More Information
 ----------------
 
-You can find more information about Pasty/AlPad 
+You can find more information about AlPad 
 [at this url](http://alvinalexander.com/apps/alpad).
 
 You can find more information about me at [alvinalexander.com](http://alvinalexander.com).

@@ -1,12 +1,14 @@
 To-Do List
 ==========
 
-This is a list of Pasty "To Do" items.
+This is a list of AlPad "To Do" items.
 
 Bugs
 ----
 
 * don't delete blank lines in the (un-)indent methods
+* i'm adding all the listeners to each textarea, which seems right; but review
+  how this works with the menubar; that is, am i constantly changing the menubar?
 
 
 Features

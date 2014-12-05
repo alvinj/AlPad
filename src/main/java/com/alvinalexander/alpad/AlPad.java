@@ -380,10 +380,8 @@ public class AlPad {
             e.consume();
         }
         // SHIFT-TAB w/ selected text
-        else if ((e.getKeyCode() == TAB_KEY_CODE) && (e.isShiftDown())
-                && (tp.getSelectedText() != null)) {
-            String textAfterTabbing = EditActions
-                    .removeTabFromBeginningOfLine(tp.getSelectedText());
+        else if ((e.getKeyCode() == TAB_KEY_CODE) && (e.isShiftDown()) && (tp.getSelectedText() != null)) {
+            String textAfterTabbing = EditActions.removeTabFromBeginningOfLine(tp.getSelectedText());
             int start = tp.getSelectionStart();
             int end = tp.getSelectionEnd();
             int originalLength = end - start;
