@@ -97,6 +97,11 @@ public class AlPad {
     public AlPad() {
         configureMainFrame(gMainFrame);
         createTextPaneInFirstTab();
+        
+        // TODO fix this: can't create the menu bar until the actions are created; they aren't created
+        // until the first textarea is created.
+        gMainFrame.setJMenuBar(createMenuBar());
+
         makeFrameVisible(gMainFrame);
     }
     
@@ -108,7 +113,6 @@ public class AlPad {
         setMainFrameSize(frame);
         setMainFrameLocation(frame);
         frame.addComponentListener(new MainFrameWindowListener(this));
-        gMainFrame.setJMenuBar(createMenuBar());
         configureQuitHandler();
     }
 
@@ -188,8 +192,8 @@ public class AlPad {
         JTextArea textArea = new JTextArea();
         textArea.setFont(new Font("Monaco", Font.PLAIN, 12));
         textArea.setMargin(new Insets(20, 20, 20, 20));
-        textArea.setBackground(new Color(183, 220, 200));
-        textArea.setBackground(new Color(143, 191, 162));
+//        textArea.setBackground(new Color(183, 220, 200));
+//        textArea.setBackground(new Color(143, 191, 162));
         textArea.setBackground(new Color(210, 230, 210));
         textArea.setForeground(new Color(25, 25, 25));
         textArea.setPreferredSize(new Dimension(700, 800));
@@ -511,14 +515,14 @@ public class AlPad {
     class NewTabAction extends AbstractAction {
         AlPad controller;
         public NewTabAction(final AlPad controller, String name, Integer mnemonic) {
-            super(name, null);
+            super(name);
             putValue(MNEMONIC_KEY, mnemonic);
             this.controller = controller;
         }
         public void actionPerformed(ActionEvent e) {
             // show a dialog requesting a tab name
             String tabName = JOptionPane.showInputDialog(gMainFrame, "Name for the new tab:");
-            if (tabName == null && tabName.trim().equals("")) {
+            if (tabName == null || tabName.trim().equals("")) {
                 // do nothing
             } else {
                 controller.handleNewTabRequest(tabName);
