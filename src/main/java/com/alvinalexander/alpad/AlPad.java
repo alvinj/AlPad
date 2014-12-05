@@ -362,7 +362,7 @@ public class AlPad {
         // convert TAB (w/ selected text) by shifting all text over three
         if ((e.getKeyCode() == TAB_KEY_CODE) && (!e.isShiftDown())
                 && (tp.getSelectedText() != null)) {
-            String textAfterTabbing = EditActions.insertTabAtBeginningOfLine(tp
+            String textAfterTabbing = EditActions.insertIndentAtBeginningOfLine(tp
                     .getSelectedText());
             int start = tp.getSelectionStart();
             int end = tp.getSelectionEnd();
@@ -381,7 +381,7 @@ public class AlPad {
         }
         // SHIFT-TAB w/ selected text
         else if ((e.getKeyCode() == TAB_KEY_CODE) && (e.isShiftDown()) && (tp.getSelectedText() != null)) {
-            String textAfterTabbing = EditActions.removeTabFromBeginningOfLine(tp.getSelectedText());
+            String textAfterTabbing = EditActions.removeIndentFromBeginningOfLine(tp.getSelectedText());
             int start = tp.getSelectionStart();
             int end = tp.getSelectionEnd();
             int originalLength = end - start;
@@ -405,7 +405,7 @@ public class AlPad {
             tp.select(startOffset, endOffset - 1);
             String textOfCurrentLine = getTextOfCurrentLine(element);
             String textAfterRemovingTabs = EditActions
-                    .removeTabFromBeginningOfLine(textOfCurrentLine);
+                    .removeIndentFromBeginningOfLine(textOfCurrentLine);
             replaceSelectionAndKeepCursor(textAfterRemovingTabs, tp);
             e.consume();
             // int originalLength = endOffset-startOffset;

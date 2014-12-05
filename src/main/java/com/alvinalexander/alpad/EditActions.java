@@ -1,47 +1,45 @@
 package com.alvinalexander.alpad;
 
-import java.util.StringTokenizer;
+public class EditActions {
 
-public class EditActions
-{
     private static final String TAB        = "  ";
-    private static final int    TAB_LENGTH = 2;
+    private static final int    TAB_LENGTH = TAB.length();
   
-    public static String insertTabAtBeginningOfLine(String originalText) {
-        if ( originalText == null )  return null;
-        if ( originalText.indexOf("\n") < 0 ) return TAB + originalText;
+    public static String insertIndentAtBeginningOfLine(String originalText) {
+        if (originalText == null)  return null;
+        if (originalText.indexOf("\n") < 0) return TAB + originalText;
     
         StringBuffer sb = new StringBuffer();
-        StringTokenizer st = new StringTokenizer(originalText,"\n");
-        while (st.hasMoreTokens()) {
-            sb.append(TAB + st.nextToken() + "\n");
+        String[] lines = originalText.split("\n");
+        for (String line: lines) {
+            sb.append(TAB + line + "\n");
         }
         return sb.toString();
     }
   
-    // TODO fix this code. use "split" instead of StringTokenizer.
-    // also, rename the method to be more accurate about what it does.
-    public static String removeTabFromBeginningOfLine(String originalText) {
+    public static String removeIndentFromBeginningOfLine(String originalText) {
         if (originalText == null)  return null;
         StringBuffer sb = new StringBuffer();
-        StringTokenizer st = new StringTokenizer(originalText,"\n");
-        int numTokens = st.countTokens();
-        while (st.hasMoreTokens()) {
-            String nextToken = st.nextToken();
-            if (beginsWithTab(nextToken)) {
-                sb.append(nextToken.substring(TAB_LENGTH, nextToken.length()));
-                if (numTokens > 1) sb.append("\n");
+        String[] lines = originalText.split("\n");
+        int numLines = lines.length;
+        int counter = 0;
+        for (String line: lines) {
+            if (beginsWithIndent(line)) {
+                sb.append(line.substring(TAB_LENGTH, line.length()));
+                if (counter++ < numLines) sb.append("\n");
             } else {
-                sb.append(nextToken);
-                if (numTokens > 1) sb.append("\n");
+                sb.append(line);
+                if (counter++ < numLines) sb.append("\n");
             }
         }
         return sb.toString();
-    }
- 
-    private static boolean beginsWithTab(String s) {
+    } 
+
+    private static boolean beginsWithIndent(String string) {
+        if (string == null) return false;
+        if (string.length() < TAB.length()) return false;
         for (int i=0; i<TAB_LENGTH; i++) {
-            if (s.charAt(i) != TAB.charAt(i)) return false;
+            if (string.charAt(i) != TAB.charAt(i)) return false;
         }
         return true;
     }
