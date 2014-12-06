@@ -113,6 +113,20 @@ public class AlPad {
         makeFrameVisible(gMainFrame);
     }
     
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    new AlPad();
+                } catch (Throwable t) {
+                    // this might help keep the app alive in the event of something bad,
+                    // which will hopefully give me enough time to copy what i have in
+                    // the text areas.
+                }
+            }
+        });
+    }
+  
     /**
      * do everything necessary to configure the mainframe
      */
@@ -274,7 +288,7 @@ public class AlPad {
     private void addKeyListenerToTextArea(final JTextArea textArea) {
         textArea.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
-                textAreaKeyPressed(e, textArea);
+                handleTextAreaKeyPressed(e, textArea);
             }
         });
     }
@@ -362,7 +376,7 @@ public class AlPad {
         updateDimensions();
     }
 
-    private void textAreaKeyPressed(final KeyEvent e, final JTextArea tp) {
+    private void handleTextAreaKeyPressed(final KeyEvent e, final JTextArea tp) {
         if (e.getKeyCode() != TAB_KEY_CODE) return;
 
         // convert TAB (w/ selected text) by shifting all text over
@@ -438,6 +452,7 @@ public class AlPad {
         }
     }
 
+    // TODO test/review this method
     private void replaceSelectionAndKeepCursor(final String newText, final JTextArea textArea) {
         textArea.replaceSelection(newText);
         textArea.repaint();
@@ -478,20 +493,6 @@ public class AlPad {
         tp.setFont(f2);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new AlPad();
-                } catch (Throwable t) {
-                    // this might help keep the app alive in the event of something bad,
-                    // which will hopefully give me enough time to copy what i have in
-                    // the text areas.
-                }
-            }
-        });
-    }
-    
     class MainFrameWindowListener extends java.awt.event.ComponentAdapter {
         AlPad adaptee;
 
