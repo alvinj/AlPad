@@ -67,7 +67,7 @@
 
       <!-- jvm settings -->
       <option value="-Xms32m"/>
-      <option value="-Xmx128m"/>
+      <option value="-Xmx192m"/>
 <!--
       <option value="-XX:PermSize=20m"/>
       <option value="-XX:MaxPermSize=20m"/>

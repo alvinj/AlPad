@@ -32,11 +32,11 @@ import com.apple.eawt.QuitResponse;
 import javax.swing.undo.*;
 
 /**
- * I named this class "Pasty" as a bit of an homage to "Clippy". :)
- * 
- * I'm also experimenting with "global" variable names, in a way similar to 
- * the Hungarian Notation discussed in this article:
- * http://www.joelonsoftware.com/articles/Wrong.html
+ * Notes:
+ *     - almost all of the code is in one file because i didn't expect it to grow this large
+ *     - i'm experimenting with "global" variable names, in a way similar to the Hungarian Notation discussed in this article:
+ *           http://www.joelonsoftware.com/articles/Wrong.html
+ *     - see the ToDo.md file for a list of bugs
  */
 public class AlPad {
 
@@ -50,11 +50,12 @@ public class AlPad {
     private static final String LAST_X0 = "LAST_X0";
     private static final String LAST_Y0 = "LAST_Y0";
     
-    // state
-    private boolean gIsDirty = false;
-    
+    // constants
     private static final int TAB_KEY_CODE = 9;
     private static final String TAB_AS_SPACES = "  ";
+
+    // state
+    private boolean gIsDirty = false;
     private int gCurrentRow = 0;
     private int gCurrentCol = 0;
 
@@ -92,10 +93,12 @@ public class AlPad {
     private static final KeyStroke gNextTabKeystroke     = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, Event.META_MASK + Event.ALT_MASK);
     private static final KeyStroke gPreviousTabKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, Event.META_MASK + Event.ALT_MASK);
 
+    // TODO i should show memory use stats rather than running the gc
     // keystroke to run the garbage collector
     private Action gRunGarbageCollectorAction = null;
     private static final KeyStroke gRunGarbageCollectorKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_G, Event.META_MASK);
 
+    // the two main objects
     private JFrame gMainFrame = new JFrame("AlPad");
     private final JTabbedPane gTabbedPane = new JTabbedPane();
     
@@ -140,7 +143,7 @@ public class AlPad {
     private void createTextPaneInFirstTab() {
         JScrollPane sp = createNewScrollPaneWithEditor(createNewTextArea());
         gTabbedPane.add(sp, "main");
-        gMainFrame.getContentPane().add(gTabbedPane, java.awt.BorderLayout.CENTER);
+        gMainFrame.getContentPane().add(gTabbedPane, BorderLayout.CENTER);
     }
     
     private void makeFrameVisible(JFrame frame) {
@@ -177,17 +180,17 @@ public class AlPad {
      */
     private void configureDocumentListener(JTextArea textArea) {
         final Document doc = textArea.getDocument();
-            doc.addDocumentListener(new DocumentListener() {
-                public void insertUpdate(DocumentEvent e) {
-                    handleDocumentWasModifiedEvent();
-                }
-                public void removeUpdate(DocumentEvent e) {
-                    handleDocumentWasModifiedEvent();
-                }
-                public void changedUpdate(DocumentEvent e) {
-                    handleDocumentWasModifiedEvent();
-                }
-            });
+        doc.addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) {
+                handleDocumentWasModifiedEvent();
+            }
+            public void removeUpdate(DocumentEvent e) {
+                handleDocumentWasModifiedEvent();
+            }
+            public void changedUpdate(DocumentEvent e) {
+                handleDocumentWasModifiedEvent();
+            }
+        });
     }
     
     void handleDocumentWasModifiedEvent() {
@@ -624,7 +627,7 @@ public class AlPad {
             String newText = text.replaceAll("\t", "  ");
             tp.setText(newText);
         }
-    }    
+    }
     
     class RunGarbageCollectorAction extends AbstractAction {
         public RunGarbageCollectorAction(String name, Integer mnemonic) {
@@ -633,7 +636,32 @@ public class AlPad {
             putValue(SHORT_DESCRIPTION, name);
         }
         public void actionPerformed(ActionEvent e) {
+            long mb = 1024*1024;
+            Runtime runtime = Runtime.getRuntime();
+            long memUsed = (runtime.totalMemory() - runtime.freeMemory()) / mb;
+            long memFree = runtime.freeMemory() / mb;
+            long memTotal = runtime.totalMemory() / mb;
+            long memMax = runtime.maxMemory() / mb;
+            String output = "Memory Stats:\n" +
+                            "-------------\n" +
+                            "Used:  " + memUsed  + " MB\n" +
+                            "Free:  " + memFree  + " MB\n" +
+                            "Total: " + memTotal + " MB\n" +
+                            "Max:   " + memMax   + " MB\n";
+            showLongMessageInOptionPane(output);
             System.gc();
+        }
+        
+        private void showLongMessageInOptionPane(String longMessage) {
+            // text area
+            JTextArea textArea = new JTextArea(8, 30);
+            textArea.setFont(new Font("Monaco", Font.PLAIN, 12));
+            textArea.setText(longMessage);
+            textArea.setEditable(false);
+            textArea.setCaretPosition(0);
+             
+            // display in a message dialog
+            JOptionPane.showMessageDialog(null, new JScrollPane(textArea));
         }
     }
 
