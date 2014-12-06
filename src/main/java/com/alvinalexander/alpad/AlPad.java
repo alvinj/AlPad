@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.text.BadLocationException;
@@ -91,6 +92,10 @@ public class AlPad {
     private static final KeyStroke gNextTabKeystroke     = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, Event.META_MASK + Event.ALT_MASK);
     private static final KeyStroke gPreviousTabKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, Event.META_MASK + Event.ALT_MASK);
 
+    // keystroke to run the garbage collector
+    private Action gRunGarbageCollectorAction = null;
+    private static final KeyStroke gRunGarbageCollectorKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_G, Event.META_MASK);
+
     private JFrame gMainFrame = new JFrame("AlPad");
     private final JTabbedPane gTabbedPane = new JTabbedPane();
     
@@ -162,6 +167,7 @@ public class AlPad {
         configureNextTabAction(textArea);
         configurePreviousTabAction(textArea);
         configureDocumentListener(textArea);
+        configureGarbageCollectorAction(textArea);
     }
 
     /**
@@ -171,7 +177,7 @@ public class AlPad {
      */
     private void configureDocumentListener(JTextArea textArea) {
         final Document doc = textArea.getDocument();
-            doc.addDocumentListener(new javax.swing.event.DocumentListener() {
+            doc.addDocumentListener(new DocumentListener() {
                 public void insertUpdate(DocumentEvent e) {
                     handleDocumentWasModifiedEvent();
                 }
@@ -192,8 +198,6 @@ public class AlPad {
         JTextArea textArea = new JTextArea();
         textArea.setFont(new Font("Monaco", Font.PLAIN, 12));
         textArea.setMargin(new Insets(20, 20, 20, 20));
-//        textArea.setBackground(new Color(183, 220, 200));
-//        textArea.setBackground(new Color(143, 191, 162));
         textArea.setBackground(new Color(210, 230, 210));
         textArea.setForeground(new Color(25, 25, 25));
         textArea.setPreferredSize(new Dimension(700, 800));
@@ -248,14 +252,17 @@ public class AlPad {
         textArea.getActionMap().put(keystrokeLabel, action);
     }
 
+    private void configureGarbageCollectorAction(JTextArea textArea) {
+        gRunGarbageCollectorAction = new RunGarbageCollectorAction("Run Garbage Collector", gRunGarbageCollectorKeystroke.getKeyCode());
+        addActionAndKeystrokeToMaps(textArea, gRunGarbageCollectorAction, gRunGarbageCollectorKeystroke, "gRunGarbageCollectorKeystroke");
+    }
+
     private void configureUndoRedoActions(JTextArea textArea) {
         gUndoAction = new UndoAction();
-        textArea.getInputMap().put(gUndoKeystroke, "undoKeystroke");
-        textArea.getActionMap().put("undoKeystroke", gUndoAction);
-
         gRedoAction = new RedoAction();
-        textArea.getInputMap().put(gRedoKeystroke, "redoKeystroke");
-        textArea.getActionMap().put("redoKeystroke", gRedoAction);
+
+        addActionAndKeystrokeToMaps(textArea, gUndoAction, gUndoKeystroke, "gUndoKeystroke");
+        addActionAndKeystrokeToMaps(textArea, gRedoAction, gRedoKeystroke, "gRedoKeystroke");
         
         Document document = textArea.getDocument();
         document.addUndoableEditListener(gUndoHandler);
@@ -311,30 +318,24 @@ public class AlPad {
         JMenuBar menuBar = new JMenuBar();
 
         // File menu
-        JMenu fileMenu = new JMenu("File");
+        //JMenu fileMenu = new JMenu("File");
 
         // Edit menu
         JMenu editMenu = new JMenu("Edit");
-        JMenuItem undoMenuItem = new JMenuItem(gUndoAction);
-        JMenuItem redoMenuItem = new JMenuItem(gRedoAction);
-        JMenuItem tabsToSpacesMenuItem = new JMenuItem(gTabsToSpacesAction);
-        editMenu.add(undoMenuItem);
-        editMenu.add(redoMenuItem);
-        editMenu.add(tabsToSpacesMenuItem);
+        editMenu.add(new JMenuItem(gUndoAction));
+        editMenu.add(new JMenuItem(gRedoAction));
+        editMenu.add(new JMenuItem(gTabsToSpacesAction));
+        editMenu.add(new JMenuItem(gRunGarbageCollectorAction));
 
         // tabs
         JMenu tabsMenu = new JMenu("Tabs");
-        JMenuItem newTabMenuItem = new JMenuItem(gNewTabAction);
-        JMenuItem renameTabMenuItem = new JMenuItem(gRenameTabAction);
-        JMenuItem nextTabMenuItem = new JMenuItem(gNextTabAction);
-        JMenuItem previousTabMenuItem = new JMenuItem(gPreviousTabAction);
-        tabsMenu.add(newTabMenuItem);
-        tabsMenu.add(renameTabMenuItem);
-        tabsMenu.add(nextTabMenuItem);
-        tabsMenu.add(previousTabMenuItem);
+        tabsMenu.add(new JMenuItem(gNewTabAction));
+        tabsMenu.add(new JMenuItem(gRenameTabAction));
+        tabsMenu.add(new JMenuItem(gNextTabAction));
+        tabsMenu.add(new JMenuItem(gPreviousTabAction));
 
         // add the menus to the menubar
-        menuBar.add(fileMenu);
+        //menuBar.add(fileMenu);
         menuBar.add(editMenu);
         menuBar.add(tabsMenu);
 
@@ -359,11 +360,11 @@ public class AlPad {
     }
 
     private void textAreaKeyPressed(final KeyEvent e, final JTextArea tp) {
-        // convert TAB (w/ selected text) by shifting all text over three
-        if ((e.getKeyCode() == TAB_KEY_CODE) && (!e.isShiftDown())
-                && (tp.getSelectedText() != null)) {
-            String textAfterTabbing = EditActions.insertIndentAtBeginningOfLine(tp
-                    .getSelectedText());
+        if (e.getKeyCode() != TAB_KEY_CODE) return;
+
+        // convert TAB (w/ selected text) by shifting all text over
+        if ((e.getKeyCode() == TAB_KEY_CODE) && (!e.isShiftDown()) && (tp.getSelectedText() != null)) {
+            String textAfterTabbing = EditActions.insertIndentAtBeginningOfLine(tp.getSelectedText());
             int start = tp.getSelectionStart();
             int end = tp.getSelectionEnd();
             int originalLength = end - start;
@@ -373,8 +374,7 @@ public class AlPad {
             tp.select(start, end + newLength - originalLength);
         }
         // convert TAB (w/ no selected text) to spaces
-        else if ((e.getKeyCode() == TAB_KEY_CODE) && (!e.isShiftDown())
-                && (tp.getSelectedText() == null)) {
+        else if ((e.getKeyCode() == TAB_KEY_CODE) && (!e.isShiftDown()) && (tp.getSelectedText() == null)) {
             String textAfterTabbing = TAB_AS_SPACES;
             replaceSelectionAndKeepCursor(textAfterTabbing, tp);
             e.consume();
@@ -395,8 +395,7 @@ public class AlPad {
         // @todo NEED HELP HERE
         // maybe determine the text range; manually select the text; then do the
         // same as is done for selected text above
-        else if ((e.getKeyCode() == TAB_KEY_CODE) && (e.isShiftDown())
-                && (tp.getSelectedText() == null)) {
+        else if ((e.getKeyCode() == TAB_KEY_CODE) && (e.isShiftDown()) && (tp.getSelectedText() == null)) {
             Document document = tp.getDocument();
             Element root = document.getDefaultRootElement();
             Element element = root.getElement(gCurrentRow);
@@ -412,16 +411,10 @@ public class AlPad {
             // int newLength = textAfterRemovingTabs.length();
             // tp.select(startOffset,endOffset+newLength-originalLength);
         }
-
-        // if ( e.isControlDown() && (e.getKeyCode()==77) ) // CTRL-m activates
-        // the popup menu
-        // if ( e.isControlDown() && (e.getKeyCode()==83) ) // CTRL-s to save
-
     }
 
     private void handleCaretUpdate(final CaretEvent e, JTextArea textArea) {
-        Document document = textArea.getDocument();
-        Element root = document.getDefaultRootElement();
+        Element root = textArea.getDocument().getDefaultRootElement();
         int dot = e.getDot();
         int row = root.getElementIndex(dot);
         int col = dot - root.getElement(row).getStartOffset();
@@ -632,6 +625,17 @@ public class AlPad {
             tp.setText(newText);
         }
     }    
+    
+    class RunGarbageCollectorAction extends AbstractAction {
+        public RunGarbageCollectorAction(String name, Integer mnemonic) {
+            super(name, null);
+            putValue(MNEMONIC_KEY, mnemonic);
+            putValue(SHORT_DESCRIPTION, name);
+        }
+        public void actionPerformed(ActionEvent e) {
+            System.gc();
+        }
+    }
 
     
     // /////////// handle undo and redo actions //////////////////
