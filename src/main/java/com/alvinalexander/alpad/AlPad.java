@@ -1,33 +1,18 @@
 package com.alvinalexander.alpad;
 
 import javax.swing.*;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.UndoableEditEvent;
-import javax.swing.event.UndoableEditListener;
+import javax.swing.event.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Event;
-import java.awt.Font;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ComponentEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.prefs.*;
 
 import javax.swing.text.Element;
 
+import com.apple.eawt.*;
 import com.apple.eawt.AppEvent.QuitEvent;
-import com.apple.eawt.Application;
-import com.apple.eawt.QuitHandler;
-import com.apple.eawt.QuitResponse;
 
 import javax.swing.undo.*;
 
@@ -99,7 +84,7 @@ public class AlPad {
     private Action gRunGarbageCollectorAction = null;
     private static final KeyStroke gRunGarbageCollectorKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_G, Event.META_MASK);
 
-    // the two main objects
+    // the main objects
     private JFrame gMainFrame = new JFrame("AlPad");
     private final JTabbedPane gTabbedPane = new JTabbedPane();
     
@@ -441,7 +426,7 @@ public class AlPad {
         int col = dot - root.getElement(row).getStartOffset();
         gCurrentRow = row;
         gCurrentCol = col;
-        // updateStatusBar(row+1, col+1);
+        //updateStatusLabel(row+1, col);
     }
 
     private String getTextOfCurrentLine(Element element) {
