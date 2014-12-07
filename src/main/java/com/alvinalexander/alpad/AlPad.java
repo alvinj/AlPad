@@ -69,10 +69,11 @@ public class AlPad {
     private static final KeyStroke gIncreaseFontSizeKeystroke3 = KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, Event.META_MASK);
 
     // undo/redo
-    private UndoableEditListener gUndoHandler = new UndoHandler();
     private UndoManager gUndoManager = new UndoManager();
-    private UndoAction gUndoAction = null;
-    private RedoAction gRedoAction = null;
+    private UndoAction gUndoAction = new UndoAction(gUndoManager);
+    private RedoAction gRedoAction = new RedoAction(gUndoManager);
+    private UndoableEditListener gUndoHandler = new UndoHandler(gUndoManager, gUndoAction, gRedoAction);
+    
     private static final KeyStroke gUndoKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_Z, Event.META_MASK);
     private static final KeyStroke gRedoKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_Y, Event.META_MASK);    
     
@@ -103,6 +104,7 @@ public class AlPad {
     private final JTabbedPane gTabbedPane = new JTabbedPane();
     
     public AlPad() {
+        finishConfiguringUndoRedoActions();
         configureMainFrame(gMainFrame);
         createTextPaneInFirstTab();
         
@@ -125,6 +127,11 @@ public class AlPad {
                 }
             }
         });
+    }
+    
+    private void finishConfiguringUndoRedoActions() {
+        gUndoAction.setRedoAction(gRedoAction);
+        gRedoAction.setUndoAction(gUndoAction);
     }
   
     /**
@@ -240,27 +247,27 @@ public class AlPad {
     }
 
     private void configureNewTabAction(JTextArea textArea) {
-        gNewTabAction = new NewTabAction(this, "New Tab", gNewTabKeystroke.getKeyCode());
+        gNewTabAction = new NewTabAction(this, gMainFrame, "New Tab", gNewTabKeystroke.getKeyCode());
         addActionAndKeystrokeToMaps(textArea, gNewTabAction, gNewTabKeystroke, "newTabKeystroke");
     }
 
     private void configureRenameTabAction(JTextArea textArea) {
-        gRenameTabAction = new RenameTabAction(this, "Rename a Tab", gRenameTabKeystroke.getKeyCode());
+        gRenameTabAction = new RenameTabAction(this, gMainFrame, gTabbedPane, "Rename a Tab", gRenameTabKeystroke.getKeyCode());
         addActionAndKeystrokeToMaps(textArea, gRenameTabAction, gRenameTabKeystroke, "renameTabKeystroke");
     }
 
     private void configureCloseTabAction(JTextArea textArea) {
-        gCloseTabAction = new CloseTabAction(this, "Close a Tab", gCloseTabKeystroke.getKeyCode());
+        gCloseTabAction = new CloseTabAction(this, gTabbedPane, "Close a Tab", gCloseTabKeystroke.getKeyCode());
         addActionAndKeystrokeToMaps(textArea, gCloseTabAction, gCloseTabKeystroke, "closeTabKeystroke");
     }
 
     private void configureNextTabAction(JTextArea textArea) {
-        gNextTabAction = new NextTabAction(this, "Next Tab", gNextTabKeystroke.getKeyCode());
+        gNextTabAction = new NextTabAction(this, gTabbedPane, "Next Tab", gNextTabKeystroke.getKeyCode());
         addActionAndKeystrokeToMaps(textArea, gNextTabAction, gNextTabKeystroke, "nextTabKeystroke");
     }
 
     private void configurePreviousTabAction(JTextArea textArea) {
-        gPreviousTabAction = new PreviousTabAction(this, "Previous Tab", gPreviousTabKeystroke.getKeyCode());
+        gPreviousTabAction = new PreviousTabAction(this, gTabbedPane, "Previous Tab", gPreviousTabKeystroke.getKeyCode());
         addActionAndKeystrokeToMaps(textArea, gPreviousTabAction, gPreviousTabKeystroke, "previousTabKeystroke");
     }
     
@@ -275,9 +282,6 @@ public class AlPad {
     }
 
     private void configureUndoRedoActions(JTextArea textArea) {
-        gUndoAction = new UndoAction();
-        gRedoAction = new RedoAction();
-
         addActionAndKeystrokeToMaps(textArea, gUndoAction, gUndoKeystroke, "gUndoKeystroke");
         addActionAndKeystrokeToMaps(textArea, gRedoAction, gRedoKeystroke, "gRedoKeystroke");
         
@@ -462,7 +466,7 @@ public class AlPad {
     /**
      * Returns true if the user wants to exit. 
      */
-    private boolean userWantsToProceedWithQuitAction() {
+    boolean userWantsToProceedWithQuitAction() {
         int choice = JOptionPane.showOptionDialog(gMainFrame,
             "You really want to quit?",
             "Quit?",
@@ -493,251 +497,6 @@ public class AlPad {
         tp.setFont(f2);
     }
 
-    class MainFrameWindowListener extends java.awt.event.ComponentAdapter {
-        AlPad adaptee;
-
-        MainFrameWindowListener(AlPad adaptee) {
-            this.adaptee = adaptee;
-        }
-        public void componentMoved(ComponentEvent e) {
-            adaptee.mainFrameMoved(e);
-        }
-        public void componentResized(ComponentEvent e) {
-            adaptee.mainFrameResized(e);
-        }
-    }
-    
-    class NewTabAction extends AbstractAction {
-        AlPad controller;
-        public NewTabAction(final AlPad controller, String name, Integer mnemonic) {
-            super(name);
-            putValue(MNEMONIC_KEY, mnemonic);
-            this.controller = controller;
-        }
-        public void actionPerformed(ActionEvent e) {
-            // show a dialog requesting a tab name
-            String tabName = JOptionPane.showInputDialog(gMainFrame, "Name for the new tab:");
-            if (tabName == null || tabName.trim().equals("")) {
-                // do nothing
-            } else {
-                controller.handleNewTabRequest(tabName);
-            }
-        }
-    }    
-    
-    
-    class RenameTabAction extends AbstractAction {
-        AlPad controller;
-        public RenameTabAction(final AlPad controller, String name, Integer mnemonic) {
-            super(name, null);
-            putValue(MNEMONIC_KEY, mnemonic);
-            this.controller = controller;
-        }
-        public void actionPerformed(ActionEvent e) {
-            int tabIndex = gTabbedPane.getSelectedIndex();
-            String tabName = JOptionPane.showInputDialog(gMainFrame, "New name for the tab:");
-            if (tabName == null || tabName.trim().equals("")) {
-                // do nothing
-            } else {
-                controller.handleRenameTabRequest(tabName, tabIndex);
-            }
-        }
-    }    
-    
-    class NextTabAction extends AbstractAction {
-        AlPad controller;
-        public NextTabAction(final AlPad controller, String name, Integer mnemonic) {
-            super(name, null);
-            putValue(MNEMONIC_KEY, mnemonic);
-            this.controller = controller;
-        }
-        public void actionPerformed(ActionEvent e) {
-            int tabCount = gTabbedPane.getTabCount();
-            if (tabCount == 1) return;
-            int newTabIndex = gTabbedPane.getSelectedIndex() + 1;    // 0-based
-            if (newTabIndex > tabCount-1) {
-                gTabbedPane.setSelectedIndex(0);
-            } else {
-                gTabbedPane.setSelectedIndex(newTabIndex);
-            }
-        }
-    }    
-    
-    class PreviousTabAction extends AbstractAction {
-        AlPad controller;
-        public PreviousTabAction(final AlPad controller, String name, Integer mnemonic) {
-            super(name, null);
-            putValue(MNEMONIC_KEY, mnemonic);
-            this.controller = controller;
-        }
-        public void actionPerformed(ActionEvent e) {
-            int tabCount = gTabbedPane.getTabCount();
-            if (tabCount == 1) return;
-            int newTabIndex = gTabbedPane.getSelectedIndex() - 1;    // 0-based
-            if (newTabIndex < 0) {
-                gTabbedPane.setSelectedIndex(tabCount-1);
-            } else {
-                gTabbedPane.setSelectedIndex(newTabIndex);
-            }
-        }
-    }    
-    
-    class CloseTabAction extends AbstractAction {
-        AlPad controller;
-        public CloseTabAction(final AlPad controller, String name, Integer mnemonic) {
-            super(name, null);
-            putValue(MNEMONIC_KEY, mnemonic);
-            this.controller = controller;
-        }
-        // TODO i don't like having two ways of exiting the app
-        public void actionPerformed(ActionEvent e) {
-            int tabCount = gTabbedPane.getTabCount();
-            if (tabCount == 1) {
-                // if there's only one tab, see if they want to quit the app
-                if (controller.userWantsToProceedWithQuitAction()) {
-                    System.exit(0);
-                }
-            } else {
-                // there are multiple tabs; close the current one
-                int choice = JOptionPane.showOptionDialog(null,
-                    "Close this tab?",
-                    "Close Tab?",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null, null, null);
-                if (choice == JOptionPane.YES_OPTION) {
-                    int tabIndex = gTabbedPane.getSelectedIndex();
-                    gTabbedPane.remove(tabIndex);
-                }
-            }
-        }
-    }    
-    
-    /**
-     * Convert tabs to spaces
-     */
-    class TabsToSpacesAction extends AbstractAction {
-        JTextArea tp;
-        public TabsToSpacesAction(final AlPad controller, final JTextArea textArea, String name, Integer mnemonic) {
-            super(name, null);
-            putValue(MNEMONIC_KEY, mnemonic);
-            this.tp = textArea;
-        }
-        public void actionPerformed(ActionEvent e) {
-            String text = tp.getText();
-            String newText = text.replaceAll("\t", "  ");
-            tp.setText(newText);
-        }
-    }
-    
-    class RunGarbageCollectorAction extends AbstractAction {
-        public RunGarbageCollectorAction(String name, Integer mnemonic) {
-            super(name, null);
-            putValue(MNEMONIC_KEY, mnemonic);
-            putValue(SHORT_DESCRIPTION, name);
-        }
-        public void actionPerformed(ActionEvent e) {
-            long mb = 1024*1024;
-            Runtime runtime = Runtime.getRuntime();
-            long memUsed = (runtime.totalMemory() - runtime.freeMemory()) / mb;
-            long memFree = runtime.freeMemory() / mb;
-            long memTotal = runtime.totalMemory() / mb;
-            long memMax = runtime.maxMemory() / mb;
-            String output = "Memory Stats:\n" +
-                            "-------------\n" +
-                            "Used:  " + memUsed  + " MB\n" +
-                            "Free:  " + memFree  + " MB\n" +
-                            "Total: " + memTotal + " MB\n" +
-                            "Max:   " + memMax   + " MB\n";
-            showLongMessageInOptionPane(output);
-            System.gc();
-        }
-        
-        private void showLongMessageInOptionPane(String longMessage) {
-            // text area
-            JTextArea textArea = new JTextArea(8, 30);
-            textArea.setFont(new Font("Monaco", Font.PLAIN, 12));
-            textArea.setText(longMessage);
-            textArea.setEditable(false);
-            textArea.setCaretPosition(0);
-             
-            // display in a message dialog
-            JOptionPane.showMessageDialog(null, new JScrollPane(textArea));
-        }
-    }
-
-    
-    // /////////// handle undo and redo actions //////////////////
-
-    class UndoHandler implements UndoableEditListener {
-        /**
-         * Messaged when the Document has created an edit, the edit is added to
-         * <code>undoManager</code>, an instance of UndoManager.
-         */
-        public void undoableEditHappened(UndoableEditEvent e) {
-            gUndoManager.addEdit(e.getEdit());
-            gUndoAction.update();
-            gRedoAction.update();
-        }
-    }
-
-    class UndoAction extends AbstractAction {
-        public UndoAction() {
-            super("Undo");
-            setEnabled(false);
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            try {
-                gUndoManager.undo();
-            }
-            catch (CannotUndoException ex) {
-                // TODO log this or ignore it
-                //ex.printStackTrace();
-            }
-            update();
-            gRedoAction.update();
-        }
-
-        protected void update() {
-            if (gUndoManager.canUndo()) {
-                setEnabled(true);
-                putValue(Action.NAME, gUndoManager.getUndoPresentationName());
-            } else {
-                setEnabled(false);
-                putValue(Action.NAME, "Undo");
-            }
-        }
-    }
-
-    class RedoAction extends AbstractAction {
-        public RedoAction() {
-            super("Redo");
-            setEnabled(false);
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            try {
-                gUndoManager.redo();
-            } catch (CannotRedoException ex) {
-                // TODO log this or ignore it
-                //ex.printStackTrace();
-            }
-            update();
-            gUndoAction.update();
-        }
-
-        protected void update() {
-            if (gUndoManager.canRedo()) {
-                setEnabled(true);
-                putValue(Action.NAME, gUndoManager.getRedoPresentationName());
-            } else {
-                setEnabled(false);
-                putValue(Action.NAME, "Redo");
-            }
-        }
-    }
-        
 
 }
 
