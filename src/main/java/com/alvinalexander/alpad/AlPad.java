@@ -159,6 +159,8 @@ public class AlPad {
 
     private JScrollPane createNewScrollPaneWithEditor(JTextArea textArea) {
         JScrollPane aScrollPane = new JScrollPane();
+        aScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        aScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 
         aScrollPane.getViewport().add(textArea);
         aScrollPane.getViewport().setPreferredSize(textArea.getPreferredSize());
         return aScrollPane;
