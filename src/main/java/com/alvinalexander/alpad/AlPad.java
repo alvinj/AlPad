@@ -48,10 +48,10 @@ public class AlPad {
     // handle several different possible keystrokes to increase the font size
     private Action gDecreaseFontSizeAction;
     private Action gIncreaseFontSizeAction;
-    private static final KeyStroke gDecreaseFontSizeKeystroke  = KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, Event.META_MASK);
+    private static final KeyStroke gDecreaseFontSizeKeystroke  = KeyStroke.getKeyStroke(KeyEvent.VK_MINUS,  Event.META_MASK);
     private static final KeyStroke gIncreaseFontSizeKeystroke1 = KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, Event.META_MASK);
     private static final KeyStroke gIncreaseFontSizeKeystroke2 = KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, Event.META_MASK + Event.SHIFT_MASK);
-    private static final KeyStroke gIncreaseFontSizeKeystroke3 = KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, Event.META_MASK);
+    private static final KeyStroke gIncreaseFontSizeKeystroke3 = KeyStroke.getKeyStroke(KeyEvent.VK_PLUS,   Event.META_MASK);
 
     // undo/redo
     private UndoManager gUndoManager = new UndoManager();
@@ -73,16 +73,20 @@ public class AlPad {
     private Action gCloseTabAction    = null;
     private Action gNextTabAction     = null;
     private Action gPreviousTabAction = null;
-    private static final KeyStroke gNewTabKeystroke      = KeyStroke.getKeyStroke(KeyEvent.VK_T, Event.META_MASK);
-    private static final KeyStroke gRenameTabKeystroke   = KeyStroke.getKeyStroke(KeyEvent.VK_R, Event.META_MASK);
-    private static final KeyStroke gCloseTabKeystroke    = KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.META_MASK);
+    private static final KeyStroke gNewTabKeystroke      = KeyStroke.getKeyStroke(KeyEvent.VK_T,     Event.META_MASK);
+    private static final KeyStroke gRenameTabKeystroke   = KeyStroke.getKeyStroke(KeyEvent.VK_R,     Event.META_MASK);
+    private static final KeyStroke gCloseTabKeystroke    = KeyStroke.getKeyStroke(KeyEvent.VK_W,     Event.META_MASK);
     private static final KeyStroke gNextTabKeystroke     = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, Event.META_MASK + Event.ALT_MASK);
-    private static final KeyStroke gPreviousTabKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, Event.META_MASK + Event.ALT_MASK);
+    private static final KeyStroke gPreviousTabKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT,  Event.META_MASK + Event.ALT_MASK);
 
     // TODO i should show memory use stats rather than running the gc
     // keystroke to run the garbage collector
     private Action gRunGarbageCollectorAction = null;
     private static final KeyStroke gRunGarbageCollectorKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_G, Event.META_MASK);
+
+    // minimize keystroke
+    private Action gMinimizeFrameAction;
+    private static final KeyStroke gMinimizeFrameKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_M, Event.META_MASK);
 
     // the main objects
     private JFrame gMainFrame = new JFrame("AlPad");
@@ -179,6 +183,7 @@ public class AlPad {
         configurePreviousTabAction(textArea);
         configureDocumentListener(textArea);
         configureGarbageCollectorAction(textArea);
+        configureMinimizeFrameAction(textArea);
     }
 
     /**
@@ -226,6 +231,11 @@ public class AlPad {
 
     void handleRenameTabRequest(String newTabName, int selectedIndex) {
         gTabbedPane.setTitleAt(selectedIndex, newTabName);
+    }
+    
+    private void configureMinimizeFrameAction(JTextPane textArea) {
+        gMinimizeFrameAction = new MinimizeFrameAction(this, gMainFrame, "Minimize Frame", gMinimizeFrameKeystroke.getKeyCode());
+        addActionAndKeystrokeToMaps(textArea, gMinimizeFrameAction, gMinimizeFrameKeystroke, "gMinimizeKeystroke");
     }
 
     private void configureTabsToSpacesAction(JTextPane textArea) {

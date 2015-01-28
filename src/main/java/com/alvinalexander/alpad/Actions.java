@@ -154,9 +154,28 @@ class CloseTabAction extends AbstractAction {
     }
 }    
 
+
+
+
 /**
-* Convert tabs to spaces
-*/
+ * An action to minimize the frame
+ */
+class MinimizeFrameAction extends AbstractAction {
+    JFrame mainFrame;
+    public MinimizeFrameAction(final AlPad controller, final JFrame mainFrame, String name, Integer mnemonic) {
+        super(name, null);
+        putValue(MNEMONIC_KEY, mnemonic);
+        this.mainFrame = mainFrame;
+    }
+    public void actionPerformed(ActionEvent e) {
+        mainFrame.setState(JFrame.ICONIFIED);
+    }
+}
+
+
+/**
+ * Convert tabs to spaces
+ */
 class TabsToSpacesAction extends AbstractAction {
   JTextPane textArea;
     public TabsToSpacesAction(final AlPad controller, final JTextPane textArea, String name, Integer mnemonic) {
