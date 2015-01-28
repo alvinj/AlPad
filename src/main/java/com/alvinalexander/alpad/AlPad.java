@@ -157,7 +157,7 @@ public class AlPad {
         frame.setVisible(true);
     }
 
-    private JScrollPane createNewScrollPaneWithEditor(JTextArea textArea) {
+    private JScrollPane createNewScrollPaneWithEditor(JTextPane textArea) {
         JScrollPane aScrollPane = new JScrollPane();
         aScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         aScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 
@@ -166,7 +166,7 @@ public class AlPad {
         return aScrollPane;
     }
 
-    private void addAllListenersToTextArea(JTextArea textArea) {
+    private void addAllListenersToTextArea(JTextPane textArea) {
         addKeyListenerToTextArea(textArea);
         addCaretListenerToTextArea(textArea);
         configureFontSizeControls(textArea);
@@ -186,7 +186,7 @@ public class AlPad {
      * but all i care about is when the document gets "dirty".
      * as long as isDirty=false, i can quit without the warning dialog.
      */
-    private void configureDocumentListener(JTextArea textArea) {
+    private void configureDocumentListener(JTextPane textArea) {
         final Document doc = textArea.getDocument();
         doc.addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
@@ -205,8 +205,8 @@ public class AlPad {
         gIsDirty = true;
     }
     
-    private JTextArea createNewTextArea() {
-        JTextArea textArea = new JTextArea();
+    private JTextPane createNewTextArea() {
+        JTextPane textArea = new JTextPane();
         textArea.setFont(new Font("Monaco", Font.PLAIN, 12));
         textArea.setMargin(new Insets(20, 20, 20, 20));
         textArea.setBackground(new Color(210, 230, 210));
@@ -217,7 +217,7 @@ public class AlPad {
     }
     
     void handleNewTabRequest(String desiredTabName) {
-        JTextArea newTextArea = createNewTextArea();
+        JTextPane newTextArea = createNewTextArea();
         JScrollPane newScrollPane = createNewScrollPaneWithEditor(newTextArea);
         gTabbedPane.add(newScrollPane, desiredTabName);
         gTabbedPane.setSelectedComponent(newScrollPane);
@@ -228,47 +228,47 @@ public class AlPad {
         gTabbedPane.setTitleAt(selectedIndex, newTabName);
     }
 
-    private void configureTabsToSpacesAction(JTextArea textArea) {
+    private void configureTabsToSpacesAction(JTextPane textArea) {
         gTabsToSpacesAction = new TabsToSpacesAction(this, textArea, "Tabs -> Spaces", gTabsToSpacesKeystroke.getKeyCode());
         addActionAndKeystrokeToMaps(textArea, gTabsToSpacesAction, gTabsToSpacesKeystroke, "tabsToSpacesKeystroke");
     }
 
-    private void configureNewTabAction(JTextArea textArea) {
+    private void configureNewTabAction(JTextPane textArea) {
         gNewTabAction = new NewTabAction(this, gMainFrame, "New Tab", gNewTabKeystroke.getKeyCode());
         addActionAndKeystrokeToMaps(textArea, gNewTabAction, gNewTabKeystroke, "newTabKeystroke");
     }
 
-    private void configureRenameTabAction(JTextArea textArea) {
+    private void configureRenameTabAction(JTextPane textArea) {
         gRenameTabAction = new RenameTabAction(this, gMainFrame, gTabbedPane, "Rename a Tab", gRenameTabKeystroke.getKeyCode());
         addActionAndKeystrokeToMaps(textArea, gRenameTabAction, gRenameTabKeystroke, "renameTabKeystroke");
     }
 
-    private void configureCloseTabAction(JTextArea textArea) {
+    private void configureCloseTabAction(JTextPane textArea) {
         gCloseTabAction = new CloseTabAction(this, gTabbedPane, "Close a Tab", gCloseTabKeystroke.getKeyCode());
         addActionAndKeystrokeToMaps(textArea, gCloseTabAction, gCloseTabKeystroke, "closeTabKeystroke");
     }
 
-    private void configureNextTabAction(JTextArea textArea) {
+    private void configureNextTabAction(JTextPane textArea) {
         gNextTabAction = new NextTabAction(this, gTabbedPane, "Next Tab", gNextTabKeystroke.getKeyCode());
         addActionAndKeystrokeToMaps(textArea, gNextTabAction, gNextTabKeystroke, "nextTabKeystroke");
     }
 
-    private void configurePreviousTabAction(JTextArea textArea) {
+    private void configurePreviousTabAction(JTextPane textArea) {
         gPreviousTabAction = new PreviousTabAction(this, gTabbedPane, "Previous Tab", gPreviousTabKeystroke.getKeyCode());
         addActionAndKeystrokeToMaps(textArea, gPreviousTabAction, gPreviousTabKeystroke, "previousTabKeystroke");
     }
     
-    private void addActionAndKeystrokeToMaps(JTextArea textArea, Action action, KeyStroke keystroke, String keystrokeLabel) {
+    private void addActionAndKeystrokeToMaps(JTextPane textArea, Action action, KeyStroke keystroke, String keystrokeLabel) {
         textArea.getInputMap().put(keystroke, keystrokeLabel);
         textArea.getActionMap().put(keystrokeLabel, action);
     }
 
-    private void configureGarbageCollectorAction(JTextArea textArea) {
+    private void configureGarbageCollectorAction(JTextPane textArea) {
         gRunGarbageCollectorAction = new RunGarbageCollectorAction("Run Garbage Collector", gRunGarbageCollectorKeystroke.getKeyCode());
         addActionAndKeystrokeToMaps(textArea, gRunGarbageCollectorAction, gRunGarbageCollectorKeystroke, "gRunGarbageCollectorKeystroke");
     }
 
-    private void configureUndoRedoActions(JTextArea textArea) {
+    private void configureUndoRedoActions(JTextPane textArea) {
         addActionAndKeystrokeToMaps(textArea, gUndoAction, gUndoKeystroke, "gUndoKeystroke");
         addActionAndKeystrokeToMaps(textArea, gRedoAction, gRedoKeystroke, "gRedoKeystroke");
         
@@ -276,7 +276,7 @@ public class AlPad {
         document.addUndoableEditListener(gUndoHandler);
     }
 
-    private void addKeyListenerToTextArea(final JTextArea textArea) {
+    private void addKeyListenerToTextArea(final JTextPane textArea) {
         textArea.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 handleTextAreaKeyPressed(e, textArea);
@@ -284,7 +284,7 @@ public class AlPad {
         });
     }
 
-    private void addCaretListenerToTextArea(final JTextArea textArea) {
+    private void addCaretListenerToTextArea(final JTextPane textArea) {
         textArea.addCaretListener(new CaretListener() {
             public void caretUpdate(CaretEvent e) {
                 handleCaretUpdate(e, textArea);
@@ -295,7 +295,7 @@ public class AlPad {
     /**
      * Let the user (me) increase and decrease the font size.
      */
-    private void configureFontSizeControls(JTextArea textArea) {
+    private void configureFontSizeControls(JTextPane textArea) {
         gDecreaseFontSizeAction = new DecreaseFontSizeAction(this, textArea, "Font--", gDecreaseFontSizeKeystroke.getKeyCode());
         gIncreaseFontSizeAction = new IncreaseFontSizeAction(this, textArea, "Font++", gIncreaseFontSizeKeystroke1.getKeyCode());
 
@@ -367,7 +367,7 @@ public class AlPad {
         updateDimensions();
     }
 
-    private void handleTextAreaKeyPressed(final KeyEvent e, final JTextArea tp) {
+    private void handleTextAreaKeyPressed(final KeyEvent e, final JTextPane tp) {
         if (e.getKeyCode() != TAB_KEY_CODE) return;
 
         // convert TAB (w/ selected text) by shifting all text over
@@ -421,7 +421,7 @@ public class AlPad {
         }
     }
 
-    private void handleCaretUpdate(final CaretEvent e, JTextArea textArea) {
+    private void handleCaretUpdate(final CaretEvent e, JTextPane textArea) {
         Element root = textArea.getDocument().getDefaultRootElement();
         int dot = e.getDot();
         int row = root.getElementIndex(dot);
@@ -444,7 +444,7 @@ public class AlPad {
     }
 
     // TODO test/review this method
-    private void replaceSelectionAndKeepCursor(final String newText, final JTextArea textArea) {
+    private void replaceSelectionAndKeepCursor(final String newText, final JTextPane textArea) {
         textArea.replaceSelection(newText);
         textArea.repaint();
         textArea.requestFocus();
@@ -472,13 +472,13 @@ public class AlPad {
     /**
      * Reduce the size of the font in the editor area.
      */
-    public void decreaseFontSizeAction(final JTextArea textArea) {
+    public void decreaseFontSizeAction(final JTextPane textArea) {
         Font f = textArea.getFont();
         Font f2 = new Font(f.getFontName(), f.getStyle(), f.getSize() - 1);
         textArea.setFont(f2);
     }
 
-    public void increaseFontSizeAction(final JTextArea tp) {
+    public void increaseFontSizeAction(final JTextPane tp) {
         Font f = tp.getFont();
         Font f2 = new Font(f.getFontName(), f.getStyle(), f.getSize() + 1);
         tp.setFont(f2);

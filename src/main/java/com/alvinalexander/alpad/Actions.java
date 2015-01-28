@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.CannotRedoException;
@@ -157,8 +158,8 @@ class CloseTabAction extends AbstractAction {
 * Convert tabs to spaces
 */
 class TabsToSpacesAction extends AbstractAction {
-    JTextArea textArea;
-    public TabsToSpacesAction(final AlPad controller, final JTextArea textArea, String name, Integer mnemonic) {
+  JTextPane textArea;
+    public TabsToSpacesAction(final AlPad controller, final JTextPane textArea, String name, Integer mnemonic) {
         super(name, null);
         putValue(MNEMONIC_KEY, mnemonic);
         this.textArea = textArea;

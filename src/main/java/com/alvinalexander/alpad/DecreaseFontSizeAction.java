@@ -9,9 +9,9 @@ import javax.swing.JTextPane;
 public class DecreaseFontSizeAction extends AbstractAction
 {
 	AlPad controller;
-	JTextArea textArea;
+	JTextPane textArea;
 	
-	public DecreaseFontSizeAction(AlPad controller, JTextArea textArea, String name, Integer mnemonic) {
+	public DecreaseFontSizeAction(AlPad controller, JTextPane textArea, String name, Integer mnemonic) {
 		super(name, null);
 		this.controller = controller;
 		this.textArea = textArea;
