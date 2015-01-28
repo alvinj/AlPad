@@ -24,9 +24,12 @@
 
   <target name="clean">
       <echo message="clean task ..." />
-      <!-- just needed for the first-time setup -->
-      <mkdir dir="${release.dir}"/>
+      <!-- delete old dirs -->
+      <delete dir="${classes.dir}" quiet="true"/>
+      <delete dir="${release.dir}" quiet="true"/>
+      <!-- create new, clean dirs -->
       <mkdir dir="${classes.dir}"/>
+      <mkdir dir="${release.dir}"/>
       <!-- remove the old version of the app -->
       <delete dir="${release.dir}/AlPad.app" />
   </target>
@@ -67,7 +70,7 @@
 
       <!-- jvm settings -->
       <option value="-Xms32m"/>
-      <option value="-Xmx192m"/>
+      <option value="-Xmx256m"/>
 <!--
       <option value="-XX:PermSize=20m"/>
       <option value="-XX:MaxPermSize=20m"/>
