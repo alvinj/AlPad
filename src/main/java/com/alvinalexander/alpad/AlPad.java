@@ -87,9 +87,21 @@ public class AlPad {
 
     // the main objects
     private final JTabbedPane gTabbedPane = new JTabbedPane();
-    private iOS7Frame gMainFrame = new iOS7Frame(gTabbedPane);
-    
+
+    // --------------------------------------------------------------
+    // CHANGES ON June 26, 2017 TO GET THIS WORKING AGAIN
+    // --------------------------------------------------------------
+    // (1) private iOS7Frame gMainFrame = new iOS7Frame(gTabbedPane);
+    // (2)
+    private JFrame gMainFrame = new JFrame();
+    // --------------------------------------------------------------
+
     public AlPad() {
+        // -------------------------
+        // (3)
+        gMainFrame.add(gTabbedPane);
+        // -------------------------
+
         gMainFrame.setTitle("AlPad");
         finishConfiguringUndoRedoActions();
         configureMainFrame(gMainFrame);
