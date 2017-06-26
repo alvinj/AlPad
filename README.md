@@ -1,6 +1,24 @@
 AlPad
 =====
 
+Update, June 26, 2017: The current app compiles, but will not run
+on MacOS 10.12.x using Java 1.8.x and Scala 2.12.x. When I try to
+run it as an app, it dies without giving me a log error message.
+
+In theory you should be able to run the app something like this,
+but it isn't working either:
+
+````
+scala -classpath "lib/rt.jar:lib/macios7components_2.12-0.3.jar:deploy/alpad.jar:/Users/al/bin/scala-2.12.2/lib/scala-library.jar" com.alvinalexander.alpad.AlPad
+````
+
+I'm out of time for now to look at this, but I'll fix it when
+I can.
+
+
+Introduction
+------------
+
 This project is a relatively simple "Scratchpad" text editor.
 
 I originally thought I just wanted a one-window, zero-tabs JFrame
@@ -17,8 +35,9 @@ As one important point, this editor does not write to the disk or
 read from the disk. As both names imply, I just want this editor running
 on the side so I can use it as a scratchpad thing.
 
-Strange Things
---------------
+
+Stranger Things
+---------------
 
 There are a couple of unusual things in the code:
 

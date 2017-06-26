@@ -69,12 +69,11 @@
       <classpath file="${proguardOutputJar}" />
 
       <!-- jvm settings -->
-      <option value="-Xms32m"/>
+      <option value="-Xms64m"/>
       <option value="-Xmx256m"/>
-<!--
       <option value="-XX:PermSize=20m"/>
       <option value="-XX:MaxPermSize=20m"/>
--->
+
       <!-- "use cms for desktop ui" -->
       <option value="-XX:+UseConcMarkSweepGC"/>
       <option value="-XX:ParallelCMSThreads=2"/>

@@ -4,17 +4,14 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.prefs.*;
-
 import javax.swing.text.Element;
-
 import com.apple.eawt.*;
 import com.apple.eawt.AppEvent.QuitEvent;
-
 import javax.swing.undo.*;
+import com.alvinalexander.macios7.iOS7Frame;
 
 /**
  * Notes:
@@ -89,10 +86,11 @@ public class AlPad {
     private static final KeyStroke gMinimizeFrameKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_M, Event.META_MASK);
 
     // the main objects
-    private JFrame gMainFrame = new JFrame("AlPad");
     private final JTabbedPane gTabbedPane = new JTabbedPane();
+    private iOS7Frame gMainFrame = new iOS7Frame(gTabbedPane);
     
     public AlPad() {
+        gMainFrame.setTitle("AlPad");
         finishConfiguringUndoRedoActions();
         configureMainFrame(gMainFrame);
         createTextPaneInFirstTab();
