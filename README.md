@@ -18,6 +18,20 @@ read from the disk. As both names imply, I just want this editor running
 on the side so I can use it as a scratchpad thing.
 
 
+Changelog: Aug. 15, 2017
+------------------------
+There have been some unusual crashes, usually right when I wake up my
+Mac, so I suspect:
+
+- Some sort of Mac event is causing the crash
+- I had a "max memory" setting in the build.xml file, and the app was
+  exceeding that hard limit, and crashing
+
+As a result I added a try/catch block in the AlPad constructor to see if
+I can catch those errors to see what's going on.
+
+
+
 Stranger Things
 ---------------
 

@@ -6,6 +6,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.prefs.*;
 import javax.swing.text.Element;
 import com.apple.eawt.*;
@@ -111,7 +113,23 @@ public class AlPad {
         // until the first textarea is created.
         gMainFrame.setJMenuBar(createMenuBar());
 
-        makeFrameVisible(gMainFrame);
+        try {
+            makeFrameVisible(gMainFrame);
+        } catch (RuntimeException e) {
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            showLongTextMessageInDialog(sw.toString(), gMainFrame);
+        }
+    }
+
+    private void showLongTextMessageInDialog(String longMessage, Frame frame) {
+        SwingUtilities.invokeLater( () -> {
+            JTextArea textArea = new JTextArea(6, 25);
+            textArea.setText(longMessage);
+            textArea.setEditable(false);
+            JScrollPane scrollPane = new JScrollPane(textArea);
+            JOptionPane.showMessageDialog(frame, scrollPane);
+        });
     }
     
     public static void main(String[] args) {
