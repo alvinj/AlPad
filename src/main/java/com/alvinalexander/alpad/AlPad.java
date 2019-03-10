@@ -242,8 +242,17 @@ public class AlPad {
         JTextPane textArea = new JTextPane();
         textArea.setFont(new Font("Monaco", Font.PLAIN, 12));
         textArea.setMargin(new Insets(20, 20, 20, 20));
-        textArea.setBackground(new Color(210, 230, 210));
-        textArea.setForeground(new Color(25, 25, 25));
+        //textArea.setBackground(new Color(210, 230, 210));
+        //textArea.setBackground(new Color(150, 198, 182));  //Cato colors
+        //textArea.setForeground(new Color(25, 25, 25));
+
+        textArea.setBackground(new Color(56, 44, 38));
+        textArea.setForeground(new Color(201, 188, 173));
+        textArea.setCaretColor(new Color(201, 188, 173));
+
+
+
+
         textArea.setPreferredSize(new Dimension(700, 800));
         addAllListenersToTextArea(textArea);
         return textArea;
