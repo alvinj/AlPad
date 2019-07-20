@@ -104,7 +104,7 @@ public class AlPad {
         gMainFrame.add(gTabbedPane);
         // -------------------------
 
-        gMainFrame.setTitle("AlPad");
+        gMainFrame.setTitle("Tabzilla");
         finishConfiguringUndoRedoActions();
         configureMainFrame(gMainFrame);
         createTextPaneInFirstTab();
@@ -310,7 +310,11 @@ public class AlPad {
     }
 
     private void configureGarbageCollectorAction(JTextPane textArea) {
-        gRunGarbageCollectorAction = new RunGarbageCollectorAction("Run Garbage Collector", gRunGarbageCollectorKeystroke.getKeyCode());
+        gRunGarbageCollectorAction = new RunGarbageCollectorAction(
+            textArea,
+            "Paste Image",
+            gRunGarbageCollectorKeystroke.getKeyCode()
+        );
         addActionAndKeystrokeToMaps(textArea, gRunGarbageCollectorAction, gRunGarbageCollectorKeystroke, "gRunGarbageCollectorKeystroke");
     }
 

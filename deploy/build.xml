@@ -1,4 +1,4 @@
-<project name="AlPad" default="create-bundle" basedir=".">
+<project name="Tabzilla" default="create-bundle" basedir=".">
 
   <property name="projectName"        value="alpad" />
   <property name="src.dir"            value="../src" />
@@ -31,7 +31,7 @@
       <mkdir dir="${classes.dir}"/>
       <mkdir dir="${release.dir}"/>
       <!-- remove the old version of the app -->
-      <delete dir="${release.dir}/AlPad.app" />
+      <delete dir="${release.dir}/Tabzilla.app" />
   </target>
 
   <target name="compile" depends="clean">
@@ -54,8 +54,8 @@
   <!-- CREATE MAC BUNDLE (new for Java7+) -->
   <target name="create-bundle" depends="make_jar">
   <bundleapp outputdirectory="${release.dir}"
-      name="AlPad"
-      displayname="AlPad"
+      name="Tabzilla"
+      displayname="Tabzilla"
       identifier="com.alvinalexander.alpad.AlPad"
       shortversion="0.1"
       icon="AlPad.icns"
@@ -86,7 +86,7 @@
       <!-- option value="-Dcom.apple.macos.use-file-dialog-packages=true" -->
       <option value="-Dapple.laf.useScreenMenuBar=true"/>
       <option value="-Dcom.apple.macos.useScreenMenuBar=true"/>
-      <option value="-Dapple.awt.application.name=AlPad"/>
+      <option value="-Dapple.awt.application.name=Tabzilla"/>
       <option value="-Dcom.apple.smallTabs=true"/>
  
     </bundleapp>

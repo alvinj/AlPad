@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="96a0bde5-01a4-4a38-8bd7-d18333e2a4b2" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/alvinalexander/alpad/Actions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alvinalexander/alpad/Actions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/alvinalexander/alpad/AlPad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alvinalexander/alpad/AlPad.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -23,23 +24,32 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="2" />
+          <entry key="JAVA" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="107" />
+          <entry key="JAVA" value="299" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/alvinalexander/alpad/AlPad.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="244" column="58" selection-start-line="244" selection-start-column="58" selection-end-line="244" selection-end-column="58" />
+            <state relative-caret-position="359">
+              <caret line="314" selection-start-line="314" selection-end-line="314" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/alvinalexander/alpad/Actions.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="456">
+              <caret line="252" column="1" selection-start-line="252" selection-start-column="1" selection-end-line="252" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -51,6 +61,10 @@
       <find>color</find>
       <find>scrollpan</find>
       <find>font</find>
+      <find>JTextPane</find>
+      <find>StyledDocument</find>
+      <find>AlPad</find>
+      <find>Run Gar</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -60,14 +74,14 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/main/java/com/alvinalexander/alpad/AlPad.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/alvinalexander/alpad/Actions.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="311" />
-    <option name="y" value="93" />
-    <option name="width" value="1377" />
-    <option name="height" value="835" />
+    <option name="y" value="23" />
+    <option name="width" value="1242" />
+    <option name="height" value="816" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -220,10 +234,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="311" y="93" width="1377" height="835" extended-state="0" />
+    <frame x="0" y="23" width="1242" height="816" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.27790263" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22166666" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -232,7 +246,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32916668" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32916668" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -264,8 +278,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/alvinalexander/alpad/AlPad.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="244" column="58" selection-start-line="244" selection-start-column="58" selection-end-line="244" selection-end-column="58" />
+        <state relative-caret-position="359">
+          <caret line="314" selection-start-line="314" selection-end-line="314" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/alvinalexander/alpad/Actions.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="456">
+          <caret line="252" column="1" selection-start-line="252" selection-start-column="1" selection-end-line="252" selection-end-column="1" />
         </state>
       </provider>
     </entry>
