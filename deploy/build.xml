@@ -70,22 +70,25 @@
 
       <!-- jvm settings -->
       <option value="-Xms64m"/>
+      <option value="-Xmx128m"/>
       <option value="-XX:PermSize=20m"/>
       <option value="-XX:MaxPermSize=20m"/>
 
       <!-- "use cms for desktop ui" -->
-      <option value="-XX:+UseConcMarkSweepGC"/>
-      <option value="-XX:ParallelCMSThreads=2"/>
+      <!-- option value="-XX:+UseConcMarkSweepGC" -->
+      <!-- option value="-XX:ParallelCMSThreads=2" -->
+      <!-- trying this option per (https://www.stefankrause.net/wp/?p=14) and others -->
+      <!-- G1GC is supposed to replace the CMS GC and also release memory -->
+      <option value="-XX:+UseG1GC"/>
 
       <!-- TODO verify that any/all of these are needed -->
-      <!-- option value="-Xdock:icon=../Resources/wiki.icns"></option -->
       <option value="-Xdock:icon=Contents/Resources/AlPad.icns"/>
+      <!-- option value="-Dcom.apple.macos.use-file-dialog-packages=true" -->
       <option value="-Dapple.laf.useScreenMenuBar=true"/>
-      <option value="-Dcom.apple.macos.use-file-dialog-packages=true"/>
       <option value="-Dcom.apple.macos.useScreenMenuBar=true"/>
       <option value="-Dapple.awt.application.name=AlPad"/>
       <option value="-Dcom.apple.smallTabs=true"/>
-
+ 
     </bundleapp>
   </target>
 
