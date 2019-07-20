@@ -2,16 +2,19 @@ package com.alvinalexander.alpad;
 
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.prefs.*;
-import javax.swing.text.Element;
+
 import com.apple.eawt.*;
 import com.apple.eawt.AppEvent.QuitEvent;
+
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
 import javax.swing.undo.*;
 
 /**
@@ -246,6 +249,19 @@ public class AlPad {
         //textArea.setBackground(new Color(210, 230, 210));
         //textArea.setBackground(new Color(150, 198, 182));  //Cato colors
         //textArea.setForeground(new Color(25, 25, 25));
+
+// TODO this was an experiment to control the line height, but it needs more research
+//        MutableAttributeSet set = new SimpleAttributeSet();
+//        StyleConstants.setLineSpacing(set, 1.5f);
+//        textArea.setParagraphAttributes(set, true);
+
+// TODO this was an experiment to control the line height, but it needs more research
+//        HTMLEditorKit editorKit = new HTMLEditorKit();
+//        StyleSheet sh = editorKit.getStyleSheet();
+//        sh.addRule("body {line-height: 50px;}");
+//        HTMLDocument document = (HTMLDocument) editorKit.createDefaultDocument();
+//        textArea.setContentType("text/html");
+//        textArea.setDocument(document);
 
         textArea.setBackground(new Color(56, 44, 38));
         textArea.setForeground(new Color(201, 188, 173));
