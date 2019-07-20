@@ -185,16 +185,12 @@ class TabsToSpacesAction extends AbstractAction {
     }
 }
 
-/**
- * Hopefully this will be a short-lived addition to the project.
- * For some reason the memory consumption on OS X Yosemite is crazy,
- * even with just one text area, and I'm trying to find out why.
- */
-class RunGarbageCollectorAction extends AbstractAction {
+
+class PasteImageAction extends AbstractAction {
 
     private JTextPane textArea;
 
-    public RunGarbageCollectorAction(final JTextPane textArea, String name, Integer mnemonic) {
+    public PasteImageAction(final JTextPane textArea, String name, Integer mnemonic) {
         super(name, null);
         putValue(MNEMONIC_KEY, mnemonic);
         putValue(SHORT_DESCRIPTION, name);
@@ -202,44 +198,13 @@ class RunGarbageCollectorAction extends AbstractAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-
         try {
             Image image = getImageFromClipboard();
             textArea.insertIcon(new ImageIcon(image));
         } catch (Exception ex) {
             // DO NOTHING FOR NOW
         }
-
     }
-
-//        long mb = 1024*1024;
-//        Runtime runtime = Runtime.getRuntime();
-//        long memUsed = (runtime.totalMemory() - runtime.freeMemory()) / mb;
-//        long memFree = runtime.freeMemory() / mb;
-//        long memTotal = runtime.totalMemory() / mb;
-//        long memMax = runtime.maxMemory() / mb;
-//        String output = "Memory Stats:\n" +
-//                        "-------------\n" +
-//                        "Used:  " + memUsed  + " MB\n" +
-//                        "Free:  " + memFree  + " MB\n" +
-//                        "Total: " + memTotal + " MB\n" +
-//                        "Max:   " + memMax   + " MB\n";
-//        showLongMessageInOptionPane(output);
-//        System.gc();
-//    }
-
-//    private void showLongMessageInOptionPane(String longMessage) {
-//        // text area
-//        JTextArea textArea = new JTextArea(8, 30);
-//        textArea.setFont(new Font("Monaco", Font.PLAIN, 12));
-//        textArea.setText(longMessage);
-//        textArea.setEditable(false);
-//        textArea.setCaretPosition(0);
-//
-//        // display in a message dialog
-//        JOptionPane.showMessageDialog(null, new JScrollPane(textArea));
-//    }
-
 
     private Image getImageFromClipboard() throws Exception {
         Transferable transferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);

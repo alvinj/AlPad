@@ -13,7 +13,6 @@ import javax.swing.text.Element;
 import com.apple.eawt.*;
 import com.apple.eawt.AppEvent.QuitEvent;
 import javax.swing.undo.*;
-import com.alvinalexander.macios7.iOS7Frame;
 
 /**
  * Notes:
@@ -310,7 +309,7 @@ public class AlPad {
     }
 
     private void configureGarbageCollectorAction(JTextPane textArea) {
-        gRunGarbageCollectorAction = new RunGarbageCollectorAction(
+        gRunGarbageCollectorAction = new PasteImageAction(
             textArea,
             "Paste Image",
             gRunGarbageCollectorKeystroke.getKeyCode()
