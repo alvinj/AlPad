@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="96a0bde5-01a4-4a38-8bd7-d18333e2a4b2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/alvinalexander/alpad/AlPad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alvinalexander/alpad/AlPad.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,19 +16,19 @@
       <usages-collector id="statistics.lifecycle.project">
         <counts>
           <entry key="project.closed" value="2" />
-          <entry key="project.open.time.0" value="1" />
+          <entry key="project.open.time.0" value="2" />
           <entry key="project.open.time.5" value="1" />
-          <entry key="project.opened" value="2" />
+          <entry key="project.opened" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="1" />
+          <entry key="JAVA" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="55" />
+          <entry key="JAVA" value="107" />
         </counts>
       </usages-collector>
     </session>
@@ -38,8 +38,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/alvinalexander/alpad/AlPad.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="380">
-              <caret line="253" lean-forward="true" selection-start-line="253" selection-end-line="253" />
+            <state relative-caret-position="243">
+              <caret line="244" column="58" selection-start-line="244" selection-start-column="58" selection-end-line="244" selection-end-column="58" />
             </state>
           </provider>
         </entry>
@@ -49,6 +49,8 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>color</find>
+      <find>scrollpan</find>
+      <find>font</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -62,10 +64,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="210" />
-    <option name="y" value="98" />
-    <option name="width" value="1489" />
-    <option name="height" value="931" />
+    <option name="x" value="311" />
+    <option name="y" value="93" />
+    <option name="width" value="1377" />
+    <option name="height" value="835" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -73,8 +75,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -97,6 +97,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -218,10 +220,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="210" y="98" width="1489" height="931" extended-state="0" />
+    <frame x="311" y="93" width="1377" height="835" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2529371" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.27790263" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -230,7 +232,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32965687" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32916668" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -253,10 +255,17 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/src.zip!/javax/swing/JScrollBar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="423">
+          <caret line="376" column="16" selection-start-line="376" selection-start-column="16" selection-end-line="376" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/alvinalexander/alpad/AlPad.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="253" lean-forward="true" selection-start-line="253" selection-end-line="253" />
+        <state relative-caret-position="243">
+          <caret line="244" column="58" selection-start-line="244" selection-start-column="58" selection-end-line="244" selection-end-column="58" />
         </state>
       </provider>
     </entry>

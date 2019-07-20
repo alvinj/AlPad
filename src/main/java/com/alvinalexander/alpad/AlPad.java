@@ -195,6 +195,8 @@ public class AlPad {
         aScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 
         aScrollPane.getViewport().add(textArea);
         aScrollPane.getViewport().setPreferredSize(textArea.getPreferredSize());
+        // slow down the vertical scroll speed
+        aScrollPane.getVerticalScrollBar().setUnitIncrement(10);
         return aScrollPane;
     }
 
@@ -240,7 +242,7 @@ public class AlPad {
     
     private JTextPane createNewTextArea() {
         JTextPane textArea = new JTextPane();
-        textArea.setFont(new Font("Monaco", Font.PLAIN, 12));
+        textArea.setFont(new Font("Monaco", Font.PLAIN, 15));
         textArea.setMargin(new Insets(20, 20, 20, 20));
         //textArea.setBackground(new Color(210, 230, 210));
         //textArea.setBackground(new Color(150, 198, 182));  //Cato colors
@@ -249,9 +251,6 @@ public class AlPad {
         textArea.setBackground(new Color(56, 44, 38));
         textArea.setForeground(new Color(201, 188, 173));
         textArea.setCaretColor(new Color(201, 188, 173));
-
-
-
 
         textArea.setPreferredSize(new Dimension(700, 800));
         addAllListenersToTextArea(textArea);
